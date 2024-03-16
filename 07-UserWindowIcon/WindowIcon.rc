@@ -1,0 +1,4 @@
+#include <windows.h>
+#include "WindowIcon.h"
+
+MYICON ICON satej.ico
