@@ -15,7 +15,7 @@ This repository contains a variety of projects developed using the WIN32 API. Th
 - Adding text to the window and changing the color text with timer 
 - Adding User-Interest Icon
 - Basic Multi-Threading
-- DLL
+- Basic DLL (Dynamic Link Library)
 
 Each project is contained within its own directory and includes the complete source code, along with any necessary resources.
 
