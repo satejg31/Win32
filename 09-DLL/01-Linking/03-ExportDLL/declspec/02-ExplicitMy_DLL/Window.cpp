@@ -1,6 +1,5 @@
 #include <windows.h>
-#include "MyMathOne.h"
-#include "MyMathTwo.h"
+#include "MyMath.h"
 
 //Global Function Declarations
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -62,12 +61,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 {
-	
+	//local variables
+	HMODULE hLib = NULL;
+	typedef int (*PMAKECUBEFUNCTION)(int);
+	PMAKECUBEFUNCTION pMakeCube = NULL;
+	int num1, num2;
+	TCHAR str[255];
+
 	//code
 	switch (iMsg)
 	{
 	case WM_CREATE:
-		MakeSquare(25);
+		hLib = LoadLibrary(TEXT("MyMath.dll"));
+		if (hLib == NULL)
+		{
+			MessageBox(hwnd, TEXT("LoadLibrary Failed"), TEXT("Error"), MB_OK);
+			DestroyWindow(hwnd);
+		}
+		pMakeCube = (PMAKECUBEFUNCTION)GetProcAddress(hLib, "MakeCube");
+		
+		if (pMakeCube == NULL)
+		{
+			MessageBox(hwnd, TEXT("Make Cube Function address cannot be obtained"), TEXT("Error"), MB_OK);
+			DestroyWindow(hwnd);
+		}
+		num1 = 15;
+		num2 = pMakeCube(num1);
+		wsprintf(str, TEXT("The Cube of %d is %d"), num1, num2);
+		MessageBox(hwnd, str, TEXT("Cube"), MB_OK);
+		FreeLibrary(hLib);
+		DestroyWindow(hwnd);
 		break;
 
 	case WM_DESTROY:
